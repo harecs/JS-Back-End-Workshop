@@ -1,13 +1,12 @@
 const express = require('express');
-const path = require('path');
 
 const configHandlebars = require('./config/configHandlebars');
+const configExpress = require('./config/configExpress');
 
 const port = 5001;
 const app = express();
 
-app.use(express.static(path.join(__dirname, './public')));
-
+configExpress(app);
 configHandlebars(app);
 
 app.get('/', (req, res) => {
