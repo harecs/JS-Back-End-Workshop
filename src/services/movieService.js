@@ -34,3 +34,8 @@ const movies = [
 exports.getAllMovies = () => {
     return movies.slice();
 };
+
+exports.addMovie = (movieInfo) => {
+    movieInfo._id = movies.length == 0 ? 1 : movies[movies.length - 1]._id + 1; 
+    movies.push(movieInfo);
+}
