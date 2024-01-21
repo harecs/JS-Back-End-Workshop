@@ -1,0 +1,33 @@
+<section id="details-page">
+
+    <div class="main_card">
+        <div class="card_left">
+            <div class="card_datails">
+
+                <h1>{{movieInfo.title}}</h1>
+                <div class="card-movie">
+                    <div class="first-info">
+                        <p class="card-genre">Genre: {{movieInfo.genre}}</p>
+                        <p class="card-director">Directror: {{movieInfo.director}}</p>
+                    </div>
+                    <div class="second-info">
+                        <p class="card-year">Year: {{movieInfo.year}}</p>
+                        <p class="card-ranking">Rating: <span id="stars">
+                                {{#each ratingArray}}
+                                &#x2605;
+                                {{/each}}
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+
+                <p class="disc">Description: {{movieInfo.description}}</p>
+            </div>
+        </div>
+        <div class="card_right">
+            <img src="{{movieInfo.imageUrl}}" alt="{{movieInfo.title}}">
+        </div>
+    </div>
+
+</section>
