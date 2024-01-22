@@ -22,8 +22,13 @@ router.get('/movies/search', (req, res) => {
 
 router.get('/movies/:movieId', (req, res) => {
     const movieInfo = movieService.getMovie(req.params.movieId);
+
+    if (!movieInfo) {
+        res.redirect('/404');
+    }
+
     const ratingArray = new Array(Number(movieInfo.rating)).fill(true);
-    // &#x2605;
+
     res.render('details', { movieInfo, ratingArray });
 });
 
