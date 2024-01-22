@@ -44,3 +44,28 @@ exports.addMovie = (movieInfo) => {
     movieInfo._id = movies.length == 0 ? 1 : movies[movies.length - 1]._id + 1;
     movies.push(movieInfo);
 };
+
+exports.search = (queryObj) => {
+    let searchedMovies = movies.slice();
+
+    if (queryObj.title) {
+        searchedMovies = searchedMovies.filter(movie => {
+            return movie.title.toLowerCase().includes(queryObj.title.toLowerCase());
+        });
+    }
+        
+    if (queryObj.genre) {
+        searchedMovies = searchedMovies.filter(movie => {
+            return movie.genre.toLowerCase().includes(queryObj.genre.toLowerCase());
+        });
+    }
+
+
+    if (queryObj.year) {
+        searchedMovies = searchedMovies.filter(movie => {
+            return Number(movie.year) == Number(queryObj.year);
+        });
+    }
+
+    return searchedMovies;
+}
