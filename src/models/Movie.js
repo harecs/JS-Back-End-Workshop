@@ -10,7 +10,7 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        lowerCase: true,
+        lowercase: true,
     },
     director: {
         type: String,
