@@ -6,8 +6,8 @@ router.get('/movies/create', (req, res) => {
     res.render('create');
 });
 
-router.post('/movies/create', (req, res) => {
-    movieService.addMovie(req.body);
+router.post('/movies/create', async (req, res) => {
+    await movieService.addMovie(req.body);
     res.redirect('/');
 });
 
@@ -20,8 +20,8 @@ router.get('/movies/search', async (req, res) => {
     res.render('search', { movies: await movies });
 });
 
-router.get('/movies/:movieId', (req, res) => {
-    const movieInfo = movieService.getMovie(req.params.movieId);
+router.get('/movies/:movieId', async (req, res) => {
+    const movieInfo = await movieService.getMovie(req.params.movieId).lean();
 
     if (!movieInfo) {
         res.redirect('/404');
