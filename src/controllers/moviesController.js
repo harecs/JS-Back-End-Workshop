@@ -11,13 +11,13 @@ router.post('/movies/create', (req, res) => {
     res.redirect('/');
 });
 
-router.get('/movies/search', (req, res) => {
+router.get('/movies/search', async (req, res) => {
     const movies =
         Object.values(req.query).length == 0
-            ? movieService.getAllMovies()
-            : movieService.search(req.query);
+            ? movieService.getAllMovies().lean()
+            : movieService.search(req.query).lean();
 
-    return res.render('search', { movies });
+    res.render('search', { movies: await movies });
 });
 
 router.get('/movies/:movieId', (req, res) => {

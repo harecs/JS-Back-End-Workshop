@@ -1,3 +1,5 @@
+const Movie = require('../models/Movie');
+
 const movies = [
     {
         _id: 1,
@@ -32,40 +34,35 @@ const movies = [
 ];
 
 exports.getAllMovies = () => {
-    return movies.slice();
+    return Movie.find();
 };
 
 exports.getMovie = (id) => {
-    return movies.find(movie => movie._id == id);
+    return Movie.findById(id);
+    // return movies.find(movie => movie._id == id);
 };
 
 exports.addMovie = (movieInfo) => {
-    movieInfo.rating = Number(movieInfo.rating);
-    movieInfo._id = movies.length == 0 ? 1 : movies[movies.length - 1]._id + 1;
-    movies.push(movieInfo);
+    return Movie.create(movieInfo);
+    // movieInfo.rating = Number(movieInfo.rating);
+    // movieInfo._id = movies.length == 0 ? 1 : movies[movies.length - 1]._id + 1;
+    // movies.push(movieInfo);
 };
 
-exports.search = (queryObj) => {
-    let searchedMovies = movies.slice();
+exports.search = (reqQuery) => {
+    const filterQuery = {};
 
-    if (queryObj.title) {
-        searchedMovies = searchedMovies.filter(movie => {
-            return movie.title.toLowerCase().includes(queryObj.title.toLowerCase());
-        });
-    }
-        
-    if (queryObj.genre) {
-        searchedMovies = searchedMovies.filter(movie => {
-            return movie.genre.toLowerCase().includes(queryObj.genre.toLowerCase());
-        });
+    if (reqQuery.title) {
+        filterQuery.title = new RegExp(`${reqQuery.title}`, 'i');
     }
 
-
-    if (queryObj.year) {
-        searchedMovies = searchedMovies.filter(movie => {
-            return Number(movie.year) == Number(queryObj.year);
-        });
+    if (reqQuery.genre) {
+        filterQuery.genre = reqQuery.genre.toLowerCase();
     }
 
-    return searchedMovies;
+    if (reqQuery.year) {
+        filterQuery.year = Number(reqQuery.year)
+    }
+
+    return Movie.find(filterQuery);
 }
