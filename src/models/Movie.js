@@ -21,7 +21,7 @@ const movieSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 1850,
-        max: new Date().getUTCFullYear()
+        max: new Date().getUTCFullYear() + 10
     },
     rating: {
         type: Number,
