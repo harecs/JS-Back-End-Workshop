@@ -3,7 +3,7 @@ const router = require('express').Router();
 const movieService = require('../services/movieService');
 
 router.get('/movies/create', (req, res) => {
-    res.render('create');
+    res.render('movie/create');
 });
 
 router.post('/movies/create', async (req, res) => {
@@ -29,7 +29,7 @@ router.get('/movies/:movieId', async (req, res) => {
 
     const ratingArray = new Array(Number(movieInfo.rating)).fill(true);
 
-    res.render('details', { movieInfo, ratingArray });
+    res.render('movie/details', { movieInfo, ratingArray });
 });
 
 module.exports = router;
