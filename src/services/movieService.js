@@ -1,4 +1,5 @@
 const Movie = require('../models/Movie');
+const Cast = require('../models/Cast');
 
 exports.getAllMovies = () => {
     return Movie.find();
@@ -28,4 +29,10 @@ exports.search = (reqQuery) => {
     }
 
     return Movie.find(filterQuery);
+}
+
+exports.attachCast = async (movieId, castId) => {
+    await Movie.findByIdAndUpdate(movieId, { $push: { casts: castId } });
+    await Cast.findByIdAndUpdate(castId, { movie: movieId });
+    return;
 }

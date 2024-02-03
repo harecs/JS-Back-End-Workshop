@@ -42,7 +42,7 @@ const movieSchema = new mongoose.Schema({
             `The image URL does't start with "http://" or "https://"`
         ]
     },
-    cast: [{
+    casts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cast'
     }]
