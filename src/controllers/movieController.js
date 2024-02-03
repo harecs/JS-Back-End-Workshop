@@ -22,7 +22,7 @@ router.get('/search', async (req, res) => {
 });
 
 router.get('/:movieId', async (req, res) => {
-    const movieInfo = await movieService.getMovie(req.params.movieId).lean();
+    const movieInfo = await movieService.getMovie(req.params.movieId).populate('casts').lean();
 
     if (!movieInfo) {
         res.redirect('/404');
