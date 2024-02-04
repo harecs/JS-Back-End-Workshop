@@ -22,11 +22,14 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const token = await authService.login(req.body);
-        res.cookie('auth', token);
-        res.redirect('/');
+        res.cookie('auth', token).redirect('/');
     } catch (err) {
         res.redirect('/auth/login');
     }    
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('auth').redirect('/');
 });
 
 module.exports = router;
