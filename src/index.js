@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 
 const configHandlebars = require('./config/configHandlebars');
 const configExpress = require('./config/configExpress');
@@ -12,6 +13,7 @@ configExpress(app);
 configHandlebars(app);
 
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(router);
 
 configMongoose()
