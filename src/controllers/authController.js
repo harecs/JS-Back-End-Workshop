@@ -23,7 +23,7 @@ router.get('/login', isNotAuth, (req, res) => {
 router.post('/login', isNotAuth, async (req, res) => {
     try {
         const token = await authService.login(req.body);
-        res.cookie('auth', token).redirect('/');
+        res.cookie('auth', token, { httpOnly: true }).redirect('/');
     } catch (err) {
         res.redirect('/auth/login');
     }
