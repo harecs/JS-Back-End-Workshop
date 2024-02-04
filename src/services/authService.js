@@ -1,11 +1,11 @@
 const User = require('../models/User');
 
-exports.register = (reqBody) => {
+exports.register = async (reqBody) => {
     if (!reqBody['email'] || !reqBody['password'] || !reqBody['rePassword']) {
         throw new Error('Invalid register data!');
     }
 
-    if (User.findOne({ email: reqBody['email'].toLowerCase() })) {
+    if (await User.findOne({ email: reqBody['email'].toLowerCase() })) {
         throw new Error('Invalid register data!');
     }
 
