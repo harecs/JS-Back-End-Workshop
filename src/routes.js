@@ -1,9 +1,12 @@
 const router = require('express').Router();
+
 const homeController = require('./controllers/homeController');
+const authController = require('./controllers/authController');
 const movieController = require('./controllers/movieController');
 const castController = require('./controllers/castController');
 
 router.use(homeController);
+router.use('/auth', authController);
 router.use('/movies', movieController);
 router.use('/cast', castController);
 
