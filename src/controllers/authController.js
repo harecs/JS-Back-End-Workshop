@@ -1,12 +1,13 @@
 const router = require('express').Router();
 
 const authService = require('../services/authService');
+const { isAuth, isNotAuth } = require('../middlewares/authMiddleware');
 
-router.get('/register', (req, res) => {
+router.get('/register', isNotAuth, (req, res) => {
     res.render('auth/register');
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', isNotAuth, async (req, res) => {
     try {
         await authService.register(req.body);
         res.redirect('/auth/login');
@@ -15,20 +16,20 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.get('/login', (req, res) => {
+router.get('/login', isNotAuth, (req, res) => {
     res.render('auth/login');
 });
 
-router.post('/login', async (req, res) => {
+router.post('/login', isNotAuth, async (req, res) => {
     try {
         const token = await authService.login(req.body);
         res.cookie('auth', token).redirect('/');
     } catch (err) {
         res.redirect('/auth/login');
-    }    
+    }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', isAuth, (req, res) => {
     res.clearCookie('auth').redirect('/');
 });
 
