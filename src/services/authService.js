@@ -5,6 +5,10 @@ exports.register = (reqBody) => {
         throw new Error('Invalid register data!');
     }
 
+    if (User.findOne({ email: reqBody['email'].toLowerCase() })) {
+        throw new Error('Invalid register data!');
+    }
+
     if (reqBody['password'] !== reqBody['rePassword']) {
         throw new Error('Invalid register data!');
     }
