@@ -26,8 +26,13 @@
             </div>
             {{#if isOwner}}
             <div class="details-btn">
-                <button id="edit-button">Edit</button>
-                <button id="delete-button">Delete</button>
+                <a href="/movies/{{movieInfo._id}}/edit">
+                    <button id="edit-button">Edit</button>
+                </a>
+
+                <a href="/movies/{{movieInfo._id}}/delete">
+                    <button id="delete-button">Delete</button>
+                </a>
             </div>
             {{/if}}
         </div>
@@ -40,8 +45,7 @@
         {{#each movieInfo.casts}}
         <div class="cast-card">
             <div class="card-img">
-                <img src="{{imageUrl}}"
-                    alt="{{name}}">
+                <img src="{{imageUrl}}" alt="{{name}}">
             </div>
             <div class="cast-info">
                 <h1>{{name}}</h1>
