@@ -36,4 +36,6 @@ exports.attachCast = async (movieId, castId) => {
     return;
 }
 
+exports.editMovie = (movieId, movieInfo) => Movie.findByIdAndUpdate(movieId, movieInfo);
+
 exports.deleteMovie = (movieId) => Movie.findByIdAndDelete(movieId);
