@@ -42,6 +42,10 @@ router.get('/:movieId/attach-cast', isAuth, async (req, res) => {
 });
 
 router.post('/:movieId/attach-cast', isAuth, async (req, res) => {
+    if (req.body.cast === 'none') {
+        return res.redirect(`/movies/${req.params.movieId}/attach-cast`);
+    }
+
     movieService.attachCast(req.params.movieId, req.body.cast);
     res.redirect(`/movies/${req.params.movieId}`);
 });
