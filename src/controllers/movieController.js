@@ -50,6 +50,12 @@ router.post('/:movieId/attach-cast', isAuth, async (req, res) => {
     res.redirect(`/movies/${req.params.movieId}`);
 });
 
+router.get('/:movieId/edit', isAuth, async (req, res) => {
+    const movieInfo = await movieService.getMovie(req.params.movieId).lean();
+    res.render('movie/edit', movieInfo);
+});
+
+
 router.get('/:movieId/delete', isAuth, async (req, res) => {
     await movieService.deleteMovie(req.params.movieId);
     res.redirect('/');
