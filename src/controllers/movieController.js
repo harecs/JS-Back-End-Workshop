@@ -46,4 +46,9 @@ router.post('/:movieId/attach-cast', isAuth, async (req, res) => {
     res.redirect(`/movies/${req.params.movieId}`);
 });
 
+router.get('/:movieId/delete', isAuth, async (req, res) => {
+    await movieService.deleteMovie(req.params.movieId);
+    res.redirect('/');
+});
+
 module.exports = router;

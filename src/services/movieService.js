@@ -1,13 +1,9 @@
 const Movie = require('../models/Movie');
 const Cast = require('../models/Cast');
 
-exports.getAllMovies = () => {
-    return Movie.find();
-};
+exports.getAllMovies = () => Movie.find();
 
-exports.getMovie = (id) => {
-    return Movie.findById(id);
-};
+exports.getMovie = (movieId) => Movie.findById(movieId)
 
 exports.addMovie = (reqBody, userId) => {
     const movieInfo = JSON.parse(JSON.stringify(reqBody));
@@ -39,3 +35,5 @@ exports.attachCast = async (movieId, castId) => {
     await Cast.findByIdAndUpdate(castId, { movie: movieId });
     return;
 }
+
+exports.deleteMovie = (movieId) => Movie.findByIdAndDelete(movieId);
