@@ -28,7 +28,7 @@ const castSchema = new mongoose.Schema({
         ]
     },
     movie: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Movie'
     }
 });

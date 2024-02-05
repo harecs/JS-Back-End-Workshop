@@ -9,7 +9,7 @@ router.get('/create', isAuth, (req, res) => {
 });
 
 router.post('/create', isAuth, async (req, res) => {
-    await movieService.addMovie(req.body);
+    await movieService.addMovie(req.body, req.userId);
     res.redirect('/');
 });
 
@@ -31,6 +31,7 @@ router.get('/:movieId', async (req, res) => {
 
     const ratingArray = new Array(Number(movieInfo.rating)).fill(true);
 
+    res.locals.isOwner = req.userId == movieInfo.owner ? true : false;
     res.render('movie/details', { movieInfo, ratingArray });
 });
 

@@ -9,7 +9,10 @@ exports.getMovie = (id) => {
     return Movie.findById(id);
 };
 
-exports.addMovie = (movieInfo) => {
+exports.addMovie = (reqBody, userId) => {
+    const movieInfo = JSON.parse(JSON.stringify(reqBody));
+    movieInfo.owner = userId;
+
     return Movie.create(movieInfo);
 };
 
