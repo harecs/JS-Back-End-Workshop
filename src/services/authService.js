@@ -24,23 +24,29 @@ exports.register = async (registerInfo) => {
 
 exports.login = async (loginInfo) => {
     if (!loginInfo['email'] || !loginInfo['password']) {
-        throw new Error('Invalid login data!');
+        throw new Error('Invalid email or password');
     }
 
     const user = await User.findOne({ email: loginInfo['email'].toLowerCase() })
 
     if (!user) {
-        throw new Error('Invalid login data!');
+        throw new Error('Invalid email or password');
     }
 
     const isValidUser = await bcrypt.compare(loginInfo.password, user.password);
 
     if (!isValidUser) {
-        throw new Error('Invalid login data!');
+        throw new Error('Invalid email or password');
     }
 
     const payload = { _id: user._id, }
-    const token = jwt.sign(payload, SECRET, {expiresIn: '2h'});
+
+    let token = '';
+    try {
+        token = jwt.sign(payload, SECRET, { expiresIn: '2h' });
+    } catch (err) {
+        throw new Error('There was an error on our behalf. Sorry for the inconvenience.');
+    }
 
     return token;
 }
