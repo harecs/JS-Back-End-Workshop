@@ -5,16 +5,18 @@ const jwt = require('../lib/jwt');
 const { SECRET } = require('../config/config');
 
 exports.register = async (registerInfo) => {
-    if (!registerInfo['email'] || !registerInfo['password'] || !registerInfo['rePassword']) {
-        throw new Error('Invalid register data!');
+    const user = await User.findOne({ email: registerInfo['email'].toLowerCase() });
+
+    if (!registerInfo.email) {
+        throw new Error('Email is required');
     }
 
-    if (await User.findOne({ email: registerInfo['email'].toLowerCase() })) {
-        throw new Error('Invalid register data!');
+    if (user) {
+        throw new Error('The email is already registered');
     }
 
     if (registerInfo['password'] !== registerInfo['rePassword']) {
-        throw new Error('Invalid register data!');
+        throw new Error('Passwords mismatch');
     }
 
     return User.create({ email: registerInfo.email, password: registerInfo.password });

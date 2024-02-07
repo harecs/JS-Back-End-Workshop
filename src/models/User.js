@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
-        required: true,
+        required: [true, 'Email is required'],
         lowercase: true,
         match: [/[a-z0-9]+@[a-z0-9]+\.[a-z0-9]+/, 'Invalid email address format'],
         minLength: [10, 'The email should be at least 10 characters long'],
@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: [true, 'Password is required'],
         match: [/[a-zA-Z0-9]+/, 'The password should consist only of English letters and digits'],
         minLength: [6, 'The password should be at least 6 characters long']
     }
