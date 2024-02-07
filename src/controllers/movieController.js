@@ -45,8 +45,7 @@ router.get('/:movieId', async (req, res) => {
     try {
         movieInfo = await movieService.getMovie(req.params.movieId).populate('casts').lean();
     } catch (err) {
-        res.locals.error = 'The requested movie does not exist';
-        return res.status(404).redirect('/home');
+        return res.status(404).render('404', { error: `The requested movie doesn't exist` });
     }
 
     const ratingArray = new Array(Number(movieInfo.rating)).fill(true);
@@ -56,18 +55,50 @@ router.get('/:movieId', async (req, res) => {
 });
 
 router.get('/:movieId/attach-cast', isAuth, async (req, res) => {
-    const movieInfo = await movieService.getMovie(req.params.movieId).lean();
-    const availableCasts = await castService.getAllAvailableCasts().lean();
+    let movieInfo = {};
+    let availableCasts = {};
+
+    try {
+        movieInfo = await movieService.getMovie(req.params.movieId).lean();
+    } catch (err) {
+        return res.status(404).render('404', { error: `The requested movie doesn't exist` });
+    }
+
+    try {
+        availableCasts = await castService.getAllAvailableCasts().lean();
+    } catch (err) {
+        return res.status(500).render('500', { error: `There was an error on our behalf. Sorry for the inconvenience.` });
+    }
+
     res.render('movie/attachCast', { movieInfo, availableCasts });
 });
 
 router.post('/:movieId/attach-cast', isAuth, async (req, res) => {
-    if (req.body.cast === 'none') {
-        return res.redirect(`/movies/${req.params.movieId}/attach-cast`);
+    let movieInfo = {};
+    let availableCasts = {};
+
+    try {
+        movieInfo = await movieService.getMovie(req.params.movieId).lean();
+    } catch (err) {
+        return res.status(404).render('404', { error: `The requested movie doesn't exist` });
     }
 
-    movieService.attachCast(req.params.movieId, req.body.cast);
-    res.redirect(`/movies/${req.params.movieId}`);
+    try {
+        availableCasts = await castService.getAllAvailableCasts().lean();
+    } catch (err) {
+        return res.status(500).render('500', { error: `There was an error on our behalf. Sorry for the inconvenience.` });
+    }
+
+    if (req.body.cast === 'none') {
+        return res.render('movie/attachCast', { movieInfo, availableCasts, error: 'You should choose a cast from the dropdown' });
+    }
+
+    try {
+        await movieService.attachCast(req.params.movieId, req.body.cast);
+        res.redirect(`/movies/${req.params.movieId}`);
+    } catch (err) {
+        res.render('movie/attachCast', { movieInfo, availableCasts, error: `There was an error on our behalf. Sorry for the inconvenience.` });
+    }
 });
 
 router.get('/:movieId/edit', isAuth, async (req, res) => {
