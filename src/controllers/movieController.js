@@ -22,19 +22,31 @@ router.post('/create', isAuth, async (req, res) => {
 });
 
 router.get('/search', async (req, res) => {
-    const movies =
-        Object.values(req.query).length == 0
-            ? movieService.getAllMovies().lean()
-            : movieService.search(req.query).lean();
+    let movies = {};
 
-    res.render('search', { movies: await movies });
+    try {
+        if (Object.values(req.query).length == 0) {
+            movies = await movieService.getAllMovies().lean();
+        } else {
+            movies = await movieService.search(req.query).lean();
+        }
+    } catch (err) {
+        const message = getErrorMessage(err);
+        return res.status(500).render('search', { error: message });
+    }
+
+
+    res.render('search', { movies });
 });
 
 router.get('/:movieId', async (req, res) => {
-    const movieInfo = await movieService.getMovie(req.params.movieId).populate('casts').lean();
+    let movieInfo = {};
 
-    if (!movieInfo) {
-        res.redirect('/404');
+    try {
+        movieInfo = await movieService.getMovie(req.params.movieId).populate('casts').lean();
+    } catch (err) {
+        res.locals.error = 'The requested movie does not exist';
+        return res.status(404).redirect('/home');
     }
 
     const ratingArray = new Array(Number(movieInfo.rating)).fill(true);
