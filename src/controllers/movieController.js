@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { getErrorMessage } = require('../utils/errorUtils');
 
 const movieService = require('../services/movieService');
 const castService = require('../services/castService');
@@ -9,8 +10,15 @@ router.get('/create', isAuth, (req, res) => {
 });
 
 router.post('/create', isAuth, async (req, res) => {
-    await movieService.addMovie(req.body, req.userId);
-    res.redirect('/');
+    const movieInfo = req.body;
+
+    try {
+        await movieService.addMovie(movieInfo, req.userId);
+        res.redirect('/');
+    } catch (err) {
+        const message = getErrorMessage(err);
+        res.status(400).render('movie/create', { ...movieInfo, error: message });
+    }
 });
 
 router.get('/search', async (req, res) => {
@@ -56,8 +64,15 @@ router.get('/:movieId/edit', isAuth, async (req, res) => {
 });
 
 router.post('/:movieId/edit', isAuth, async (req, res) => {
-    await movieService.editMovie(req.params.movieId, req.body);
-    res.redirect(`/movies/${req.params.movieId}`);
+    const movieInfo = req.body;
+
+    try {
+        await movieService.editMovie(req.params.movieId, movieInfo);
+        res.redirect(`/movies/${req.params.movieId}`);
+    } catch (err) {
+        const message = getErrorMessage(err);
+        res.status(400).render('movie/edit', { ...movieInfo, error: message });
+    }
 });
 
 router.get('/:movieId/delete', isAuth, async (req, res) => {
