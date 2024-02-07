@@ -102,7 +102,14 @@ router.post('/:movieId/attach-cast', isAuth, async (req, res) => {
 });
 
 router.get('/:movieId/edit', isAuth, async (req, res) => {
-    const movieInfo = await movieService.getMovie(req.params.movieId).lean();
+    let movieInfo = {};
+
+    try {
+        movieInfo = await movieService.getMovie(req.params.movieId).lean();
+    } catch (err) {
+        return res.status(404).render('404', { error: `The requested movie doesn't exist` });
+    }
+    
     res.render('movie/edit', movieInfo);
 });
 
