@@ -4,7 +4,7 @@ const movieSchema = new mongoose.Schema({
     title: {
         type: String,
         required: [true, 'Title is required'],
-        match: [/[a-zA-Z0-9\s]+/, 'The title should consist only of English letters, digits and whitespaces'],
+        match: [/[a-zA-Z0-9\s]+/, 'The title should consist only of English letters, digits and whitespace characters'],
         minLength: [5, 'The title should be at least 5 characters long'],
         trim: true
     },
@@ -12,14 +12,14 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Genre is required'],
         lowercase: true,
-        match: [/[a-zA-Z0-9\s]+/, 'The genre should consist only of English letters, digits and whitespaces'],
+        match: [/[a-zA-Z0-9\s]+/, 'The genre should consist only of English letters, digits and whitespace characters'],
         minLength: [5, 'The genre should be at least 5 characters long'],
         trim: true
     },
     director: {
         type: String,
         required: [true, 'Director is required'],
-        match: [/[a-zA-Z0-9\s]+/, 'The director should consist only of English letters, digits and whitespaces'],
+        match: [/[a-zA-Z0-9\s]+/, 'The director should consist only of English letters, digits and whitespace characters'],
         minLength: [5, 'The director should be at least 5 characters long'],
         trim: true
     },
@@ -48,7 +48,7 @@ const movieSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Description is required'],
         minLength: [20, 'The description should be at least 20 characters long'],
-        match: [/[a-zA-Z0-9\s]+/, 'The description should consist only of English letters, digits and whitespaces'],
+        match: [/[a-zA-Z0-9\s]+/, 'The description should consist only of English letters, digits and whitespace characters'],
         trim: true
     },
     casts: [{
