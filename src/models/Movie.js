@@ -3,44 +3,53 @@ const mongoose = require('mongoose');
 const movieSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true,
+        required: [true, 'Title is required'],
+        match: [/[a-zA-Z0-9\s]+/, 'The title should consist only of English letters, digits and whitespaces'],
+        minLength: [5, 'The title should be at least 5 characters long'],
         trim: true
     },
     genre: {
         type: String,
-        required: true,
-        trim: true,
+        required: [true, 'Genre is required'],
         lowercase: true,
+        match: [/[a-zA-Z0-9\s]+/, 'The genre should consist only of English letters, digits and whitespaces'],
+        minLength: [5, 'The genre should be at least 5 characters long'],
+        trim: true
     },
     director: {
         type: String,
-        required: true,
+        required: [true, 'Director is required'],
+        match: [/[a-zA-Z0-9\s]+/, 'The director should consist only of English letters, digits and whitespaces'],
+        minLength: [5, 'The director should be at least 5 characters long'],
         trim: true
     },
     year: {
         type: Number,
-        required: true,
-        min: 1850,
-        max: new Date().getUTCFullYear() + 10
-    },
-    rating: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 5
-    },
-    description: {
-        type: String,
-        required: true,
-        maxLength: 350
+        required: [true, 'Year is required'],
+        min: [1900, 'The minimum year is 1900'],
+        max: [2024, 'The maximum year is 2024']
     },
     imageUrl: {
         type: String,
-        required: true,
+        required: [true, 'Movie Poster is required'],
         match: [
             /https?:\/\//i,
-            `The image URL does't start with "http://" or "https://"`
-        ]
+            `The movie poster image URL should start with "http://" or "https://"`
+        ],
+        trim: true
+    },
+    rating: {
+        type: Number,
+        required: [true, 'Rating is required'],
+        min: [1, 'The minimum rating is 1'],
+        max: [5, 'The maximum rating is 5']
+    },
+    description: {
+        type: String,
+        required: [true, 'Description is required'],
+        minLength: [20, 'The description should be at least 20 characters long'],
+        match: [/[a-zA-Z0-9\s]+/, 'The description should consist only of English letters, digits and whitespaces'],
+        trim: true
     },
     casts: [{
         type: mongoose.Types.ObjectId,
