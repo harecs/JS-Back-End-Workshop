@@ -126,7 +126,20 @@ router.post('/:movieId/edit', isAuth, async (req, res) => {
 });
 
 router.get('/:movieId/delete', isAuth, async (req, res) => {
-    await movieService.deleteMovie(req.params.movieId);
+    const movieId = req.params.movieId;
+
+    try {
+        await movieService.getMovie(movieId).lean();
+    } catch (err) {
+        return res.status(404).render('404', { error: `The requested movie doesn't exist` });
+    }
+
+    try {
+        await movieService.deleteMovie(movieId);
+    } catch (err) {
+        return res.status(500).render('500', { error: `There was an error on our behalf. Sorry for the inconvenience.` });
+    }
+    
     res.redirect('/');
 });
 
