@@ -12,6 +12,7 @@ router.post('/register', isNotAuth, async (req, res) => {
         await authService.register(req.body);
         res.redirect('/auth/login');
     } catch (err) {
+        console.error(err);
         res.redirect('/auth/register');
     }
 });
